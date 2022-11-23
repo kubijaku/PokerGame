@@ -6,10 +6,10 @@
   <version>1.0</version>
 
 
-  <name>Przyklad - aplikacja wielomodulowa z dwoma modulami z klasa Main i metoda main</name>
+  <name>PokerGame-Jakub_Kubicki</name>
   <packaging>pom</packaging>
 
-  <!-- Dodane przez pskrzynski -->
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
