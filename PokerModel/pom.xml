@@ -8,8 +8,8 @@
     <version>1.0</version>
   </parent>
 
-  <artifactId>Main</artifactId>
-  <name>PokerModel modul</name>
+  <artifactId>PokerModel</artifactId>
+  <name>PokerModel</name>
 
   <!-- Dodane przez pskrzynski -->
   <properties>

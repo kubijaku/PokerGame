@@ -30,12 +30,12 @@
 
           <dependency>
               <groupId>pl.edu.agh.kis.pz1</groupId>
-              <artifactId>main1</artifactId>
+              <artifactId>PokerModel</artifactId>
               <version>${project.version}</version>
           </dependency>
           <dependency>
               <groupId>pl.edu.agh.kis.pz1</groupId>
-              <artifactId>main2</artifactId>
+              <artifactId>Server</artifactId>
               <version>${project.version}</version>
           </dependency>
           <dependency>
