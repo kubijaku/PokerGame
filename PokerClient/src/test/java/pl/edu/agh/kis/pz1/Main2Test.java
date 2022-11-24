@@ -12,11 +12,11 @@ public class Main2Test {
      * main method being called
      *
      */
-    @Test
-    public void shouldCreateMainObject(){
-        Main2 main = new Main2();
-        assertNotNull("Main method called on class Main2.", main);
-    }
+//    @Test
+//    public void shouldCreateMainObject(){
+//        Main2 main = new Main2();
+//        assertNotNull("Main method called on class Main2.", main);
+//    }
 }
 
 

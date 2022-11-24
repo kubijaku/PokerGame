@@ -19,9 +19,9 @@ import java.util.concurrent.Executors;
 public class Server {
     private static final int PORT = 1234;
     private static String[] names = {"Player1","Player2","Player3","Player4"};
-    private static int namesIterator = 0;
+    private static int namesIterator = -1;
     private static ArrayList<ClientHandler> clients = new ArrayList<>();
-    private static ExecutorService pool = Executors.newFixedThreadPool(4);
+    private static ExecutorService pool = Executors.newFixedThreadPool(2);
 
 
     public static void main(String[] args) throws IOException
@@ -48,7 +48,7 @@ public class Server {
     }
 
     public static String getName() {
-        namesIterator++;
+        if( namesIterator<3)  namesIterator++; //change if you add other players
         return names[namesIterator];
     }
 }
