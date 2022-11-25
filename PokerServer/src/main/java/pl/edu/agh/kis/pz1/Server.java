@@ -33,13 +33,11 @@ public class Server {
             System.out.println("SERVER Waiting for clients connecion...");
             Socket client = listener.accept();
             System.out.println("Server connected to client!");
-            ClientHandler clientThread = new ClientHandler(client);
+            ClientHandler clientThread = new ClientHandler(client, clients);
             clients.add(clientThread);
 
             pool.execute(clientThread);
         }
-
-
 
 
 //        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
@@ -47,8 +45,9 @@ public class Server {
 //
     }
 
-    public static String getName() {
-        if( namesIterator<3)  namesIterator++; //change if you add other players
-        return names[namesIterator];
+    public static String getName(ClientHandler client) {
+        return names[clients.indexOf(client)];
     }
+
+
 }

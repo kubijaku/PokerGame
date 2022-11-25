@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>Server</artifactId>
-  <name>Modul Server</name>
+  <name>PokerServer</name>
 
   <!-- Dodane przez pskrzynski -->
   <properties>

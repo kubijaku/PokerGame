@@ -10,12 +10,11 @@ public class ServerHandler implements Runnable{
 
     private Socket server;
     private BufferedReader in;
-    private PrintWriter out;
+
 
     public ServerHandler(Socket s) throws IOException {
         server = s;
         in = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        out = new PrintWriter(server.getOutputStream(), true);
 
     }
 

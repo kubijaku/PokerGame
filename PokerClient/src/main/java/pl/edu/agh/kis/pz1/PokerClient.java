@@ -19,21 +19,22 @@ public class PokerClient {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(SERVER_IP, SERVER_PORT);
 
-        BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        BufferedReader keybord = new BufferedReader( new InputStreamReader(System.in));
+        ServerHandler serverConn = new ServerHandler(socket);
+
+
+        BufferedReader keyboard = new BufferedReader( new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        new Thread(serverConn).start();
 
         while (true)
         {
             System.out.println("> ");
-            String command  = keybord.readLine();
+            String command  = keyboard.readLine();
 
             if (command.equals("quit")) break;
 
             out.println(command);
-
-            String serverResponse = input.readLine();
-            System.out.println("Server says: " + serverResponse);
         }
 
 
