@@ -60,7 +60,7 @@ public class Deck {
         }
 
         Cards = tmpStack;
-        System.out.println("Sorted cards");
+//        System.out.println("Sorted cards");
         this.print();
         return tmpStack;
     }
@@ -101,13 +101,11 @@ public class Deck {
     }
 
     /**
-     * Method 'gives' 5 {@link Card cards} from c to Player - {@link Player#playerCards playerCards}
+     * Method 'gives' 5 {@link Card cards} from cards to Player - playerCards
      * @param  pl  object representing PLayer
      */
     public void give5Cards(Player pl) {
-        for (int i = 0; i < 5; i++) {
-            pl.playerCards.push(this.Cards.pop());
-        }
+        pl.get5Cards(this);
     }
 
     /**

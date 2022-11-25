@@ -1,13 +1,13 @@
 package pl.edu.agh.kis.pz1;
 
+
+import pl.edu.agh.kis.pz1.util.PokerUtil;
 import pl.edu.agh.kis.pz1.util.TextUtils;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
-
-import static pl.edu.agh.kis.pz1.util.TextUtils.*;
 
 public class ClientHandler implements Runnable {
     private Socket client;
@@ -26,9 +26,10 @@ public class ClientHandler implements Runnable {
     @Override
     public void run(){
         try {
-            String hello = Hello();
 
-//            for( String letter : hello) out.println(letter);
+
+            String welcome = PokerUtil.welcomeToPoker();
+            out.println( welcome);
 //            out.println("HELLO");
             while (true){
                 String request = in.readLine();

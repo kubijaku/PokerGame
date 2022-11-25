@@ -1,6 +1,6 @@
 package pl.edu.agh.kis.pz1;
 
-import pl.edu.agh.kis.pz1.util.CryptUtil;
+import pl.edu.agh.kis.pz1.util.PokerUtil;
 
 import java.util.*;
 
@@ -13,6 +13,7 @@ public class Main {
 
     public static void main(String[] args)
     {
+        System.out.println( PokerUtil.hashCode("hi"));
 
 
     }

@@ -5,7 +5,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -46,8 +45,7 @@ public class TextUtils {
     }
 
 
-    Vector<String> result = new Vector<>();
-    static void add(Vector<String> result, Vector<String> letter)
+    static void Add(Vector<String> result, Vector<String> letter)
     {
         for( String element : letter)
         {
@@ -55,7 +53,7 @@ public class TextUtils {
         }
 
     }
-    public static String Hello()
+    public static Vector<String> Hello()
     {
         Vector<String> H = new Vector<String>();
         Vector<String> E = new Vector<String>();
@@ -96,13 +94,13 @@ public class TextUtils {
         O.add(" OOOOO  ");
 
         Vector<String> result = new Vector<String>();
-        add(result, H);
-        add(result, E);
-        add(result, L);
-        add(result, L);
-        add(result, O);
+        Add(result, H);
+        Add(result, E);
+        Add(result, L);
+        Add(result, L);
+        Add(result, O);
 
-        return "hi";
+        return result;
     }
 
 

@@ -17,6 +17,16 @@ public class Card {
         suit = cSuit;
     }
 
+    public static Rank getRank(Card card)
+    {
+        return card.rank;
+    }
+
+    public static Suit getSuit(Card card)
+    {
+        return card.suit;
+    }
+
 
     @Override
     public int hashCode() {

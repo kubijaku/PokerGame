@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public class CryptUtil
+public class PokerUtil
 {
     public static String hashCode(String text)
     {
@@ -43,5 +43,15 @@ public class CryptUtil
     public static double add(double num1, double num2)
     {
         return num1+num2;
+    }
+
+    public static String welcomeToPoker()
+    {
+        return "######################" +
+                "#######WELCOME#######" +
+                "#########TO##########" +
+                "#######POKER#########" +
+                "########GAME#########" +
+                "#########!!!########";
     }
 }
