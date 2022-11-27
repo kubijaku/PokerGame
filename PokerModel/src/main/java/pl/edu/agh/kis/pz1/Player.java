@@ -42,10 +42,18 @@ public class Player {
         return false;
     }
 
+    public int containSameSuit( Card checkCard, Stack<Card> newcards) {
+        for( Card card : newcards)
+        {
+            if ( Card.getSuit( checkCard ) == Card.getSuit( card )) return newcards.indexOf(card);
+        }
+        return -1;
+    }
+
     public void checkVariats(Stack<Card> cards)
     {
+        Stack<Card> newCards = new Stack<Card>();
         if(sameColours(cards)) {
-            Stack<Card> newCards = new Stack<Card>();
             newCards = cards;
             if(Card.getSuit(newCards.pop()) == Suit._10 &&
                     Card.getSuit(newCards.pop()) == Suit._WALET &&
@@ -60,12 +68,60 @@ public class Player {
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()+1] &&
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()+1] ) playerVariants.push(Variants.STRAIGHT_FLUSH);
             else playerVariants.push(Variants.FLUSH);
-        } //else TODO
+        } else {
+            newCards = cards;
+            newCards = sortCards(newCards);
+            Suit suit0 = Card.getSuit(newCards.pop());
+            if (Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
+                    Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
+                    Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()]) playerVariants.push(Variants.QUADS);
+            else {
+                newCards = cards;
+                newCards = sortCards(newCards);
+                newCards.pop();
+                Suit suit1 = Card.getSuit(newCards.pop());
+                if (Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
+                        Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
+                        Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()])
+                    playerVariants.push(Variants.QUADS);
+                else {
+                    newCards = cards;
+                    newCards = sortCards(newCards);
+                    for (Card cardToBeChecked : newCards) {
+                        if (containSameSuit(cardToBeChecked, newCards) != -1) {
+                            newCards.remove(containSameSuit(cardToBeChecked, newCards));
 
-        {
+                            for (Card cardToBeChecked2 : newCards) {
+                                if (containSameSuit(cardToBeChecked2, newCards) != -1) {
+                                    newCards.remove(containSameSuit(cardToBeChecked2, newCards));
+                                    newCards.remove(cardToBeChecked2);
+
+                                    for (Card cardToBeChecked3 : newCards) {
+                                        if (containSameSuit(cardToBeChecked3, newCards) != -1)
+                                            playerVariants.push(Variants.FULL_HOUSE);
+                                        else playerVariants.push(Variants.THREE_OF_KIND);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        newCards = cards;
+        newCards = sortCards(newCards);
+        int numberOfPairs = 0;
+        for (Card cardToBeChecked : newCards) {
+            if (containSameSuit(cardToBeChecked, newCards) != -1) {
+                newCards.remove(cardToBeChecked);
+                newCards.remove(containSameSuit(cardToBeChecked, newCards));
+                numberOfPairs = numberOfPairs + 1;
+            }
+        }
+        if (numberOfPairs == 2) playerVariants.push(Variants.TWO_PAIR);
+        if (numberOfPairs == 1) playerVariants.push(Variants.ONE_PAIR);
 
         }
-    }
     public boolean sameColours( Stack<Card> cards)
     {
         Rank colour = Card.getRank(cards.pop());
@@ -76,27 +132,29 @@ public class Player {
         return false;
     }
 
-    public Stack<Card> sortPlayerCards() {
+    public Stack<Card> sortCards(Stack<Card> newcards ) {
         Stack<Card> tmpStack = new Stack<Card>();
-        while (!playerCards.isEmpty()) {
+        while (!newcards.isEmpty()) {
             // pop out the first element
-            Card tmp = playerCards.pop();
+            Card tmp = newcards.pop();
 
             // while temporary stack is not empty and
             // top of stack is greater than temp
             while (!tmpStack.isEmpty() && tmpStack.peek().hashCode() > tmp.hashCode()) {
                 // pop from temporary stack and
                 // push it to the input stack
-                playerCards.push(tmpStack.pop());
+                newcards.push(tmpStack.pop());
             }
 
             // push temp in temporary of stack
             tmpStack.push(tmp);
         }
-        playerCards = tmpStack;
+        newcards = tmpStack;
 
         return tmpStack;
     }
+
+
 
 
 }
