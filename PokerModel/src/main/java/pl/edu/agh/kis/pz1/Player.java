@@ -1,5 +1,6 @@
 package pl.edu.agh.kis.pz1;
 
+import java.lang.reflect.Array;
 import java.util.Stack;
 
 /**
@@ -12,6 +13,7 @@ import java.util.Stack;
 public class Player {
     private Stack<Card> playerCards = new Stack<Card>();
     private Stack<Variants> playerVariants = new Stack<Variants>();
+    private Variants[] highestVariant = new Variants[0]; ;
 
 
     /**
@@ -50,7 +52,7 @@ public class Player {
         return -1;
     }
 
-    public void checkVariats(Stack<Card> cards)
+    public Stack<Variants> checkAllPossibleVariants(Stack<Card> cards)
     {
         Stack<Card> newCards = new Stack<Card>();
         if(sameColours(cards)) {
@@ -120,9 +122,38 @@ public class Player {
         }
         if (numberOfPairs == 2) playerVariants.push(Variants.TWO_PAIR);
         if (numberOfPairs == 1) playerVariants.push(Variants.ONE_PAIR);
+        return playerVariants;
+    }
 
+    public Variants HIGHestVariant ( Stack<Card> cards) {
+        Stack<Variants> allPossibleVariants = new Stack<Variants>();
+        allPossibleVariants = checkAllPossibleVariants( cards );
+        Variants[] allPossibleVariantsArray = new Variants[0];
+        int i = 0;
+        for ( Variants actualVariant : allPossibleVariants )
+        {
+            allPossibleVariantsArray[i] = actualVariant;
+            i++;
         }
-    public boolean sameColours( Stack<Card> cards)
+        for( int j=0; j<i-1; j++)
+        {
+            if( allPossibleVariantsArray[i].ordinal() < allPossibleVariantsArray[i+1].ordinal() )
+            {
+                Variants pom = allPossibleVariantsArray[i];
+                allPossibleVariantsArray[i] = allPossibleVariantsArray[i+1];
+                allPossibleVariantsArray[i+1] = pom;
+            }
+        }
+        highestVariant[0] = allPossibleVariantsArray[0];
+        return allPossibleVariantsArray[0];
+    }
+
+    public Stack<Variants> getPlayerVariants() {
+        return playerVariants;
+    }
+
+
+    public boolean sameColours(Stack<Card> cards)
     {
         Rank colour = Card.getRank(cards.pop());
         for( Card card1 : playerCards)
