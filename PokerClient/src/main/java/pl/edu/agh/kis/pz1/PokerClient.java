@@ -13,7 +13,7 @@ import java.net.Socket;
  */
 public class PokerClient {
     private static final String SERVER_IP = "127.0.0.1";
-    private static final int SERVER_PORT = 1234;
+    private static final int SERVER_PORT = 1223;
 
 
     public static void main(String[] args) throws IOException {
@@ -26,7 +26,7 @@ public class PokerClient {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
         new Thread(serverConn).start();
-
+        System.out.println("Wait for your turn :) ");
         while (true)
         {
             System.out.println("> ");

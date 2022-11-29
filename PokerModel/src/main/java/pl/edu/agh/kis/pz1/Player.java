@@ -1,6 +1,8 @@
 package pl.edu.agh.kis.pz1;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -11,9 +13,9 @@ import java.util.Stack;
  * {@link #get5Cards(Deck deck) get5Cards(Deck deck)}
  */
 public class Player {
-    private Stack<Card> playerCards = new Stack<Card>();
+    public Stack<Card> playerCards = new Stack<Card>();
     private Stack<Variants> playerVariants = new Stack<Variants>();
-    private Variants[] highestVariant = new Variants[0]; ;
+    private Variants[] highestVariant = new Variants[1]; ;
 
 
     /**
@@ -29,10 +31,13 @@ public class Player {
     /**
      * Gives 5 {@link Card cards} to  {@link #playerCards}
      */
-    public void get5Cards(Deck deck) {
+    public Stack<Card> get5Cards(Deck deck) {
+        Stack<Card> newplayerCards = new Stack<Card>();
         for (int i = 0; i < 5; i++) {
-            playerCards.push(deck.Cards.pop());
+            newplayerCards.push(deck.Cards.pop());
         }
+        playerCards = newplayerCards;
+        return newplayerCards;
     }
 
     public boolean contain( Card card)
@@ -44,25 +49,26 @@ public class Player {
         return false;
     }
 
-    public int containSameSuit( Card checkCard, Stack<Card> newcards) {
-        for( Card card : newcards)
+    public int containSameSuit( Card checkCard, List<Card> newCards1) {
+        for( Card card : newCards1)
         {
-            if ( Card.getSuit( checkCard ) == Card.getSuit( card )) return newcards.indexOf(card);
+            if ( Card.getSuit( checkCard ) == Card.getSuit( card ) && checkCard != card) return newCards1.indexOf(card);
         }
         return -1;
     }
 
     public Stack<Variants> checkAllPossibleVariants(Stack<Card> cards)
     {
-        Stack<Card> newCards = new Stack<Card>();
         if(sameColours(cards)) {
-            newCards = cards;
-            if(Card.getSuit(newCards.pop()) == Suit._10 &&
-                    Card.getSuit(newCards.pop()) == Suit._WALET &&
-                    Card.getSuit(newCards.pop()) == Suit._DAMA &&
-                    Card.getSuit(newCards.pop()) == Suit._KROL &&
-                    Card.getSuit(newCards.pop()) == Suit._AS ) playerVariants.push(Variants.ROYAL_FLUSH);
-            else newCards = cards;
+            Stack<Card> newCards = (Stack<Card>) cards.clone();
+            newCards = sortCards(newCards);
+            List<Card> newCardsList = (List<Card>) newCards;
+            if(Card.getSuit(newCardsList.get(0)) == Suit._10 &&
+                    Card.getSuit(newCardsList.get(1)) == Suit._WALET &&
+                    Card.getSuit(newCardsList.get(2)) == Suit._DAMA &&
+                    Card.getSuit(newCardsList.get(3)) == Suit._KROL &&
+                    Card.getSuit(newCardsList.get(4)) == Suit._AS ) playerVariants.push(Variants.ROYAL_FLUSH);
+            else newCards = (Stack<Card>) cards.clone();
             Suit suit0 = Card.getSuit(newCards.pop());
             if (suit0 != Suit._10 &&
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()+1] &&
@@ -71,14 +77,14 @@ public class Player {
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()+1] ) playerVariants.push(Variants.STRAIGHT_FLUSH);
             else playerVariants.push(Variants.FLUSH);
         } else {
-            newCards = cards;
+            Stack<Card> newCards = (Stack<Card>) cards.clone();
             newCards = sortCards(newCards);
             Suit suit0 = Card.getSuit(newCards.pop());
             if (Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()] &&
                     Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()]) playerVariants.push(Variants.QUADS);
             else {
-                newCards = cards;
+                newCards = (Stack<Card>) cards.clone();
                 newCards = sortCards(newCards);
                 newCards.pop();
                 Suit suit1 = Card.getSuit(newCards.pop());
@@ -87,37 +93,44 @@ public class Player {
                         Card.getSuit(newCards.pop()) == Suit.values()[suit0.ordinal()])
                     playerVariants.push(Variants.QUADS);
                 else {
-                    newCards = cards;
+                    newCards = (Stack<Card>) cards.clone();
                     newCards = sortCards(newCards);
-                    for (Card cardToBeChecked : newCards) {
-                        if (containSameSuit(cardToBeChecked, newCards) != -1) {
-                            newCards.remove(containSameSuit(cardToBeChecked, newCards));
+                    List<Card> newCardsList = (List<Card>) newCards;
+                    for (int i=0; i<newCardsList.size();i++ ) {
+                        if (containSameSuit(newCardsList.get(i), newCardsList) != -1) {
+                            newCardsList.remove(containSameSuit(newCardsList.get(i), newCardsList));
 
-                            for (Card cardToBeChecked2 : newCards) {
-                                if (containSameSuit(cardToBeChecked2, newCards) != -1) {
-                                    newCards.remove(containSameSuit(cardToBeChecked2, newCards));
-                                    newCards.remove(cardToBeChecked2);
+                            if (containSameSuit(newCardsList.get(i), newCardsList) != -1) {
+                                newCardsList.remove(containSameSuit(newCardsList.get(i), newCardsList));
+                                newCardsList.remove(newCardsList.get(i));
+                                if (newCardsList.size() > 1 && containSameSuit(newCardsList.get(0), newCardsList) != -1) {
+                                    newCardsList.remove(containSameSuit(newCardsList.get(0), newCardsList));
 
-                                    for (Card cardToBeChecked3 : newCards) {
-                                        if (containSameSuit(cardToBeChecked3, newCards) != -1)
-                                            playerVariants.push(Variants.FULL_HOUSE);
-                                        else playerVariants.push(Variants.THREE_OF_KIND);
-                                    }
+                                    playerVariants.push(Variants.FULL_HOUSE);
+                                    break;
                                 }
+                                playerVariants.push(Variants.THREE_OF_KIND);
+                                break;
                             }
                         }
                     }
                 }
             }
         }
-        newCards = cards;
+        Stack<Card> newCards = new Stack<Card>();
+        newCards = (Stack<Card>) cards.clone();
         newCards = sortCards(newCards);
         int numberOfPairs = 0;
-        for (Card cardToBeChecked : newCards) {
-            if (containSameSuit(cardToBeChecked, newCards) != -1) {
-                newCards.remove(cardToBeChecked);
-                newCards.remove(containSameSuit(cardToBeChecked, newCards));
+        List<Card> newCardsList = (List<Card>) newCards.clone();
+        for (int k =0; k< newCardsList.size(); k++) {
+            newCards = (Stack<Card>) cards.clone();
+            newCards = sortCards(newCards);
+            newCards.remove(newCardsList.get(k));
+            if (containSameSuit(newCardsList.get(k), newCards) != -1) {
+                newCards.remove(containSameSuit(newCardsList.get(k), newCards));
+                newCards.remove(newCardsList.get(k));
                 numberOfPairs = numberOfPairs + 1;
+                k = k + 2;
             }
         }
         if (numberOfPairs == 2) playerVariants.push(Variants.TWO_PAIR);
@@ -128,24 +141,30 @@ public class Player {
     public Variants HIGHestVariant ( Stack<Card> cards) {
         Stack<Variants> allPossibleVariants = new Stack<Variants>();
         allPossibleVariants = checkAllPossibleVariants( cards );
-        Variants[] allPossibleVariantsArray = new Variants[0];
+        Variants[] allPossibleVariantsArray = new Variants[allPossibleVariants.size()];
         int i = 0;
         for ( Variants actualVariant : allPossibleVariants )
         {
             allPossibleVariantsArray[i] = actualVariant;
             i++;
         }
-        for( int j=0; j<i-1; j++)
+        for( int j=0; j<i-2; j++)
         {
-            if( allPossibleVariantsArray[i].ordinal() < allPossibleVariantsArray[i+1].ordinal() )
+            if( allPossibleVariantsArray[j].ordinal() < allPossibleVariantsArray[j+1].ordinal() )
             {
-                Variants pom = allPossibleVariantsArray[i];
-                allPossibleVariantsArray[i] = allPossibleVariantsArray[i+1];
-                allPossibleVariantsArray[i+1] = pom;
+                Variants pom = allPossibleVariantsArray[j];
+                allPossibleVariantsArray[j] = allPossibleVariantsArray[j+1];
+                allPossibleVariantsArray[j+1] = pom;
             }
         }
-        highestVariant[0] = allPossibleVariantsArray[0];
-        return allPossibleVariantsArray[0];
+        if(allPossibleVariants.size() > 0 )
+        {
+            highestVariant[0] = allPossibleVariantsArray[0];
+            return allPossibleVariantsArray[0];
+        }
+        else return Variants.HIGH_CARD;
+
+
     }
 
     public Stack<Variants> getPlayerVariants() {
@@ -155,16 +174,19 @@ public class Player {
 
     public boolean sameColours(Stack<Card> cards)
     {
-        Rank colour = Card.getRank(cards.pop());
-        for( Card card1 : playerCards)
+        Stack<Card> tempPlayerCards = (Stack<Card>) cards.clone();
+        Rank colour = Card.getRank(tempPlayerCards.pop());
+
+        while(!tempPlayerCards.isEmpty())
         {
-            if ( Card.getRank(cards.pop())!=colour)  return false;
+            if ( Card.getRank(tempPlayerCards.pop())!=colour)  return false;
         }
         return false;
     }
 
-    public Stack<Card> sortCards(Stack<Card> newcards ) {
+    public Stack<Card> sortCards(Stack<Card> newcards1 ) {
         Stack<Card> tmpStack = new Stack<Card>();
+        Stack<Card> newcards = (Stack<Card>) newcards1.clone();
         while (!newcards.isEmpty()) {
             // pop out the first element
             Card tmp = newcards.pop();
@@ -186,8 +208,13 @@ public class Player {
     }
 
 
-
-
+    public Stack<Card> changeCard(int i, Stack<Card> playerCards, Deck deck) {
+        Stack<Card> newPlayerCards = (Stack<Card>) playerCards.clone();
+        newPlayerCards.remove(i);
+        newPlayerCards.push(deck.Cards.pop());
+        playerCards = newPlayerCards;
+        return newPlayerCards;
+    }
 }
 
 enum Variants

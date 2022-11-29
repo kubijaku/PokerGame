@@ -26,6 +26,8 @@ public class ServerHandler implements Runnable{
                 if ( serverResponse == null ) break;
 
                 System.out.println("Server says: " + serverResponse);
+
+
             }
         } catch (IOException e) {
             e.printStackTrace();

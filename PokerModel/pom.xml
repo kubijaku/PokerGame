@@ -65,8 +65,13 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.4.1</version>
       </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.7.0.1746</version>
+      </plugin>
     </plugins>
-  </build> 
+  </build>
 
   <!-- najświeższa wersja w otwartym repo maven to 4.13.2 -->
   <dependencies>
