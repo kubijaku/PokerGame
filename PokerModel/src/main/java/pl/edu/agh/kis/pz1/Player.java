@@ -40,6 +40,10 @@ public class Player {
         return newplayerCards;
     }
 
+    /**
+     * Methods check whether there exists the given card in Stack
+     * returns true if exists such a card and false if doesn't exist
+     */
     public boolean contain( Card card)
     {
         for( Card card1 : playerCards)
@@ -49,6 +53,10 @@ public class Player {
         return false;
     }
 
+    /**
+     * Methods check whether there exists card in Stack with the same suit as the given card
+     * returns index of this card if exists such a card and -1 if doesn't exist
+     */
     public int containSameSuit( Card checkCard, List<Card> newCards1) {
         for( Card card : newCards1)
         {
@@ -57,6 +65,9 @@ public class Player {
         return -1;
     }
 
+    /**
+     * Methods returns all possible cards Variants for playerCards
+     */
     public Stack<Variants> checkAllPossibleVariants(Stack<Card> cards)
     {
         if(sameColours(cards)) {
@@ -138,6 +149,9 @@ public class Player {
         return playerVariants;
     }
 
+    /**
+     * Methods returns HighestVariant for playerCards
+     */
     public Variants HIGHestVariant ( Stack<Card> cards) {
         Stack<Variants> allPossibleVariants = new Stack<Variants>();
         allPossibleVariants = checkAllPossibleVariants( cards );
@@ -171,7 +185,9 @@ public class Player {
         return playerVariants;
     }
 
-
+    /**
+     * Methods checks if all cards from Stack has the same rank
+     */
     public boolean sameColours(Stack<Card> cards)
     {
         Stack<Card> tempPlayerCards = (Stack<Card>) cards.clone();
@@ -207,7 +223,10 @@ public class Player {
         return tmpStack;
     }
 
-
+    /**
+     * Methods change card with the given index
+     * removes card with the given index and push new card from the given deck
+     */
     public Stack<Card> changeCard(int i, Stack<Card> playerCards, Deck deck) {
         Stack<Card> newPlayerCards = (Stack<Card>) playerCards.clone();
         newPlayerCards.remove(i);

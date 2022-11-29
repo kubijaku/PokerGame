@@ -27,12 +27,17 @@ public class Card {
         return card.suit;
     }
 
-
+    /**
+     * HashCode used to sort the Deck
+     */
     @Override
     public int hashCode() {
         return rank.ordinal() + suit.ordinal() * 10;
     }
 
+    /**
+     * HashCode used to shuffle the Deck
+     */
     public int hashCode2() {
         Random rand = new Random();
         double x = rand.nextInt(5);
@@ -45,6 +50,9 @@ public class Card {
         System.out.println(this.suit);
     }
 
+    /**
+     * Methods checking if two cards are equals
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

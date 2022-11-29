@@ -6,7 +6,7 @@ import java.util.*;
 
 
 /**
- * Main class - nothing interesting here
+ * Main class - do nothing
  * @author Me
  */
 public class Main {
